@@ -14,29 +14,65 @@ public class Ball : MonoBehaviour
 
     public Rigidbody rigidbody;
 
-    void OnMouseDown()
+    private void Update()
     {
-        startTime = Time.time;
-        startPos = Input.mousePosition;
-        startPos.z = transform.position.z - Camera.main.transform.position.z;
-        startPos = Camera.main.ScreenToWorldPoint(startPos);
+        if (Input.GetMouseButtonDown(0))
+        {
+            startTime = Time.time;
+            startPos = Input.mousePosition;
+            startPos.z = transform.position.z - Camera.main.transform.position.z;
+            startPos = Camera.main.ScreenToWorldPoint(startPos);
+         //   Debug.Log("Pos >> " + Input.mousePosition);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            var endPos = Input.mousePosition;
+            endPos.z = transform.position.z - Camera.main.transform.position.z;
+            endPos = Camera.main.ScreenToWorldPoint(endPos);
+
+            Vector3 force = endPos - startPos;
+            force.z = force.magnitude;
+            force.Normalize();
+            force /= (Time.time - startTime);
+
+            //var anglex = startPos.x * Time.deltaTime * 2;
+            //var angley = startPos.y * Time.deltaTime * 5;
+            //Vector3 elevationAngle = new Vector3(anglex, angley, 0);
+
+            //rigidbody.velocity = transform.TransformDirection(new Vector3(anglex, angley, angley));
+            //var elevation  = Quaternion.Euler(elevationAngle) * transform.forward;
+            //rigidbody.AddRelativeForce(elevation);
+
+
+            rigidbody.AddForce(force * factor, ForceMode.Impulse);//AddForce(force * factor);
+            StartCoroutine(ReturnBall());
+        }
     }
 
-    void OnMouseUp()
-    {
-        var endPos = Input.mousePosition;
-        endPos.z = transform.position.z - Camera.main.transform.position.z;
-        endPos = Camera.main.ScreenToWorldPoint(endPos);
+    //void OnMouseDown()
+    //{
+    //    startTime = Time.time;
+    //    startPos = Input.mousePosition;
+    //    startPos.z = transform.position.z - Camera.main.transform.position.z;
+    //    startPos = Camera.main.ScreenToWorldPoint(startPos);
+    //}
 
-        Vector3 force = endPos - startPos;
-        force.z = force.magnitude;
-        force.Normalize();
-        force /= (Time.time - startTime);
+    //void OnMouseUp()
+    //{
+    //    var endPos = Input.mousePosition;
+    //    endPos.z = transform.position.z - Camera.main.transform.position.z;
+    //    endPos = Camera.main.ScreenToWorldPoint(endPos);
+
+    //    Vector3 force = endPos - startPos;
+    //    force.z = force.magnitude;
+    //    force.Normalize();
+    //    force /= (Time.time - startTime);
 
 
-        rigidbody.AddForce(force * factor);
-        StartCoroutine(ReturnBall());
-    }
+    //    rigidbody.AddForce(force * factor);
+    //    StartCoroutine(ReturnBall());
+    //}
 
     IEnumerator ReturnBall()
     {
