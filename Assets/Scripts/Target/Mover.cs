@@ -11,7 +11,7 @@ public class Mover : MonoBehaviour
 
     void Start()
     {
-        transform.DOMove(target, time).SetEase(Ease.OutQuint).SetLoops(100).OnComplete(onComlete);
+        transform.DOLocalMove(target, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
     }
 
     private void onComlete()

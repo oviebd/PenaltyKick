@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class TargetItem : MonoBehaviour, IScore,ICollisionEnter
+public class TargetItem : MonoBehaviour, IScore,IReacatble
 {
     [SerializeField] private int _point = 1;
+    [SerializeField] private TMP_Text pointText;
     public bool isMoveable = false;
 
     public int GetPoint()
@@ -16,12 +18,9 @@ public class TargetItem : MonoBehaviour, IScore,ICollisionEnter
     public void SetPoint(int point)
     {
         _point = point;
+        pointText.text = _point + "";
     }
 
-    public void onCollisionEnter(GameObject collidedObj)
-    {
-        Debug.Log("Destroy Item...");
-    }
 
     public void Disable()
     {
@@ -42,4 +41,14 @@ public class TargetItem : MonoBehaviour, IScore,ICollisionEnter
     {
         SetPoint(0);
     }
+
+    public void ReactOnCollide()
+    {
+        Debug.Log("Destroy Item...");
+    }
+}
+
+public interface IReacatble
+{
+    void ReactOnCollide();
 }

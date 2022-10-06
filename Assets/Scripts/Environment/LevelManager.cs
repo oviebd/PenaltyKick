@@ -13,6 +13,19 @@ public class LevelManager : MonoBehaviour
     private int _currentKickNumber = 0; 
     private bool _isGameOver = false;
 
+    private void OnEnable()
+    {
+        GameManager.shared.onKickCompleted += OnKickCompleted;
+    }
+  
+
+    private void OnDestroy()
+    {
+        GameManager.shared.onKickCompleted -= OnKickCompleted;
+    }
+
+
+
     public void PrepareGame(int kickNumber)
     {
         _maxKick = kickNumber;
@@ -36,7 +49,7 @@ public class LevelManager : MonoBehaviour
 
     private void SetTargets()
     {
-        int index = Random.Range(0, targetSetList.Count);
+        int index = 0;//Random.Range(0, targetSetList.Count);
 
         for(int i = 0; i < targetSetList.Count; i++)
         {
@@ -54,19 +67,16 @@ public class LevelManager : MonoBehaviour
 
 
 
-    public void OnKickCompleted(bool isScored)
+    public void OnKickCompleted(int score)
     {
 
-        if (isScored)
-        {
+        if (score > 0) 
             GameManager.shared.GetGameInstances().uiManager.UpdateKickCountUi(_currentKickNumber - 1, KickCountUiItem.ITEM_TYPE.RIGHT);
-        }
         else
-        {
             GameManager.shared.GetGameInstances().uiManager.UpdateKickCountUi(_currentKickNumber - 1 , KickCountUiItem.ITEM_TYPE.MISS);
-        }
 
         _currentKickNumber += 1;
+
         if (_currentKickNumber > _maxKick)
         {
             _isGameOver = true;

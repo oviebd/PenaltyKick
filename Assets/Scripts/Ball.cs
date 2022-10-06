@@ -50,7 +50,7 @@ public class Ball : MonoBehaviour, ICollisionEnter
             rigidbody.AddForce(-direction.x * throwForceInXandY, -direction.y * throwForceInXandY, throwForceInZ / timeInterval);
 
            
-            StartCoroutine(OnComplete());
+            StartCoroutine(OnKickCompleteAction(4.0f,0));
         }
 
 
@@ -104,24 +104,30 @@ public class Ball : MonoBehaviour, ICollisionEnter
     //    StartCoroutine(ReturnBall());
     //}
 
-    IEnumerator OnComplete()
+    IEnumerator OnKickCompleteAction(float time, int score = 0)
     {
-        yield return new WaitForSeconds(4.0f);
+        yield return new WaitForSeconds(time);
 
-        GameManager.shared.OnBallKicked(isScoredByThisBall);
+        GameManager.shared.OnBallKicked(score);
         Destroy(gameObject);
     }
 
     public void onCollisionEnter(GameObject collidedObj)
     {
+        if (isScoredByThisBall)
+            return;
+
         IScore scoreItem = collidedObj.GetComponent<IScore>();
-        if (scoreItem != null && isScoredByThisBall == false)
+
+        if (scoreItem != null)
         {
             isScoredByThisBall = true;
-            GameManager.shared.GetGameInstances().scoreManager.AddScore(scoreItem.GetPoint());
-            //GameManager.shared.GetGameInstances().uiManager.UpdateKickCountUi(1, KickCountUiItem.ITEM_TYPE.RIGHT);
-            Debug.Log("U>> Yahoo goallll");
+            StopAllCoroutines();
+            StartCoroutine(OnKickCompleteAction(2, scoreItem.GetPoint()));
         }
+        Debug.Log("U>> Yahoo goallll  " + collidedObj.gameObject.name);
+        IReacatble reactable = collidedObj.GetComponent<IReacatble>();
+        reactable?.ReactOnCollide();
 
     }
 }
