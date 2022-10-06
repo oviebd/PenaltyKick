@@ -11,6 +11,8 @@ public class ScoreManager : MonoBehaviour
     {
         _currenrScore = score + _currenrScore;
         Debug.Log("U>> Current SCore " + _currenrScore);
+        GameManager.shared.GetGameInstances().uiManager.UpdateScore(score);
+       
     }
 
 

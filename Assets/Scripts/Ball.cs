@@ -20,10 +20,7 @@ public class Ball : MonoBehaviour, ICollisionEnter
 
     [SerializeField]
     float throwForceInZ = 50f; // to control throw force in Z direction
-
-
     public Rigidbody rigidbody;
-
     private bool isScoredByThisBall = false;
 
     private void Update()
@@ -111,7 +108,7 @@ public class Ball : MonoBehaviour, ICollisionEnter
     {
         yield return new WaitForSeconds(4.0f);
 
-        GameManager.shared.OnBallKicked();
+        GameManager.shared.OnBallKicked(isScoredByThisBall);
         Destroy(gameObject);
     }
 
@@ -122,9 +119,8 @@ public class Ball : MonoBehaviour, ICollisionEnter
         {
             isScoredByThisBall = true;
             GameManager.shared.GetGameInstances().scoreManager.AddScore(scoreItem.GetPoint());
-
+            //GameManager.shared.GetGameInstances().uiManager.UpdateKickCountUi(1, KickCountUiItem.ITEM_TYPE.RIGHT);
             Debug.Log("U>> Yahoo goallll");
         }
-        
     }
 }

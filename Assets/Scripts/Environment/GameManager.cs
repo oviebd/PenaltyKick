@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     [HideInInspector] public static GameManager shared;
     [SerializeField] private GameInstances _gameInstance;
-   
+
+    int kickPerGame = 5;
 
     private void Awake()
     {
@@ -18,7 +19,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        _gameInstance.levelManager.PrepareGame();
+        StartGame();
+    }
+
+    private void StartGame()
+    {
+        _gameInstance.levelManager.PrepareGame(kickPerGame);
+        _gameInstance.uiManager.SetInitialGameUI(kickPerGame);
     }
 
     public GameInstances GetGameInstances()
@@ -26,9 +33,9 @@ public class GameManager : MonoBehaviour
         return _gameInstance;
     }
 
-    public void OnBallKicked()
+    public void OnBallKicked(bool isScoredByThisBall)
     {
-        _gameInstance.levelManager.OnKickCompleted();
+        _gameInstance.levelManager.OnKickCompleted(isScoredByThisBall);
     }
 
 

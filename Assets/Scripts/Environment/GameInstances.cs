@@ -7,5 +7,7 @@ public class GameInstances : MonoBehaviour
     
     public ScoreManager scoreManager;
     public LevelManager levelManager;
+
+    public UiManager uiManager;
     
 }
