@@ -2,52 +2,85 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviour, ICollisionEnter
 {
 
 
-    public float factor = 100;
+    //public float factor = 100;
 
-    private float startTime;
-    private Vector3 startPos;
+    //private float startTime;
+    //private Vector3 startPos;
+
+
+    Vector2 startPos, endPos, direction; // touch start position, touch end position, swipe direction
+    float touchTimeStart, touchTimeFinish, timeInterval; // to calculate swipe time to sontrol throw force in Z direction
+
+    [SerializeField]
+    float throwForceInXandY = 1f; // to control throw force in X and Y directions
+
+    [SerializeField]
+    float throwForceInZ = 50f; // to control throw force in Z direction
 
 
     public Rigidbody rigidbody;
 
+    private bool isScoredByThisBall = false;
+
     private void Update()
     {
+
         if (Input.GetMouseButtonDown(0))
         {
-            startTime = Time.time;
+            touchTimeStart = Time.time;
             startPos = Input.mousePosition;
-            startPos.z = transform.position.z - Camera.main.transform.position.z;
-            startPos = Camera.main.ScreenToWorldPoint(startPos);
-         //   Debug.Log("Pos >> " + Input.mousePosition);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            var endPos = Input.mousePosition;
-            endPos.z = transform.position.z - Camera.main.transform.position.z;
-            endPos = Camera.main.ScreenToWorldPoint(endPos);
+            touchTimeFinish = Time.time;
 
-            Vector3 force = endPos - startPos;
-            force.z = force.magnitude;
-            force.Normalize();
-            force /= (Time.time - startTime);
+            // calculate swipe time interval 
+            timeInterval = touchTimeFinish - touchTimeStart;
 
-            //var anglex = startPos.x * Time.deltaTime * 2;
-            //var angley = startPos.y * Time.deltaTime * 5;
-            //Vector3 elevationAngle = new Vector3(anglex, angley, 0);
+            // getting release finger position
+            endPos = Input.mousePosition;
 
-            //rigidbody.velocity = transform.TransformDirection(new Vector3(anglex, angley, angley));
-            //var elevation  = Quaternion.Euler(elevationAngle) * transform.forward;
-            //rigidbody.AddRelativeForce(elevation);
+            // calculating swipe direction in 2D space
+            direction = startPos - endPos;
 
+            // add force to balls rigidbody in 3D space depending on swipe time, direction and throw forces
+            rigidbody.isKinematic = false;
+            rigidbody.AddForce(-direction.x * throwForceInXandY, -direction.y * throwForceInXandY, throwForceInZ / timeInterval);
 
-            rigidbody.AddForce(force * factor, ForceMode.Impulse);//AddForce(force * factor);
+            // Destroy ball in 4 seconds
             StartCoroutine(ReturnBall());
         }
+
+
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    startTime = Time.time;
+        //    startPos = Input.mousePosition;
+        //    startPos.z = transform.position.z - Camera.main.transform.position.z;
+        //    startPos = Camera.main.ScreenToWorldPoint(startPos);
+        // //   Debug.Log("Pos >> " + Input.mousePosition);
+        //}
+
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    var endPos = Input.mousePosition;
+        //    endPos.z = transform.position.z - Camera.main.transform.position.z;
+        //    endPos = Camera.main.ScreenToWorldPoint(endPos);
+
+        //    Vector3 force = endPos - startPos;
+        //    force.z = force.magnitude;
+        //    force.Normalize();
+        //    force /= (Time.time - startTime);
+
+      
+        //    rigidbody.AddForce(force * factor);
+        //    StartCoroutine(ReturnBall());
+        //}
     }
 
     //void OnMouseDown()
@@ -81,4 +114,14 @@ public class Ball : MonoBehaviour
         rigidbody.velocity = Vector3.zero;
     }
 
+    public void onCollisionEnter(GameObject collidedObj)
+    {
+        IScore scoreItem = collidedObj.GetComponent<IScore>();
+        if (scoreItem != null && isScoredByThisBall == false)
+        {
+            isScoredByThisBall = true;
+            GameManager.shared.gameInstance.scoreManager.AddScore(scoreItem.GetPoint());
+        }
+        Debug.Log("U>> Yahoo goallll");
+    }
 }
