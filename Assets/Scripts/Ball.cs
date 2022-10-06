@@ -122,5 +122,6 @@ public class Ball : MonoBehaviour, ICollisionEnter
             //GameManager.shared.GetGameInstances().uiManager.UpdateKickCountUi(1, KickCountUiItem.ITEM_TYPE.RIGHT);
             Debug.Log("U>> Yahoo goallll");
         }
+
     }
 }

@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
 
     int kickPerGame = 5;
 
+    //public delegate void OnKickedCompleted(int Score, KickCountUiItem.ITEM_TYPE type);
+    //public static event OnKickedCompleted onKickCompleted;
+
     private void Awake()
     {
         if (shared == null)

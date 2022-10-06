@@ -7,6 +7,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject ballSpwanerParent;
     [SerializeField] private GameObject ballPrefab;
 
+    [SerializeField] private List<GameObject> targetSetList = new List<GameObject>();
+
     private int _maxKick = 5; // Kick number of a single Level
     private int _currentKickNumber = 0; 
     private bool _isGameOver = false;
@@ -34,13 +36,23 @@ public class LevelManager : MonoBehaviour
 
     private void SetTargets()
     {
+        int index = Random.Range(0, targetSetList.Count);
 
+        for(int i = 0; i < targetSetList.Count; i++)
+        {
+            targetSetList[i].SetActive(false);
+           //TargetItem item = targetSetList[i].GetComponent<TargetItem>();
+        }
+
+        targetSetList[index].SetActive(true);
     }
 
     private void ResetLevel()
     {
 
     }
+
+
 
     public void OnKickCompleted(bool isScored)
     {
