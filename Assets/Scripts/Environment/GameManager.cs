@@ -5,8 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [HideInInspector] public static GameManager shared;
-
-    public GameInstances gameInstance;
+    [SerializeField] private GameInstances _gameInstance;
    
 
     private void Awake()
@@ -19,8 +18,18 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+        _gameInstance.levelManager.PrepareGame();
     }
 
-    
+    public GameInstances GetGameInstances()
+    {
+        return _gameInstance;
+    }
+
+    public void OnBallKicked()
+    {
+        _gameInstance.levelManager.OnKickCompleted();
+    }
+
+
 }

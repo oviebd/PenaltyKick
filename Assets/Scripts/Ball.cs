@@ -52,8 +52,8 @@ public class Ball : MonoBehaviour, ICollisionEnter
             rigidbody.isKinematic = false;
             rigidbody.AddForce(-direction.x * throwForceInXandY, -direction.y * throwForceInXandY, throwForceInZ / timeInterval);
 
-            // Destroy ball in 4 seconds
-            StartCoroutine(ReturnBall());
+           
+            StartCoroutine(OnComplete());
         }
 
 
@@ -107,11 +107,12 @@ public class Ball : MonoBehaviour, ICollisionEnter
     //    StartCoroutine(ReturnBall());
     //}
 
-    IEnumerator ReturnBall()
+    IEnumerator OnComplete()
     {
         yield return new WaitForSeconds(4.0f);
-        transform.position = Vector3.zero;
-        rigidbody.velocity = Vector3.zero;
+
+        GameManager.shared.OnBallKicked();
+        Destroy(gameObject);
     }
 
     public void onCollisionEnter(GameObject collidedObj)
@@ -120,8 +121,10 @@ public class Ball : MonoBehaviour, ICollisionEnter
         if (scoreItem != null && isScoredByThisBall == false)
         {
             isScoredByThisBall = true;
-            GameManager.shared.gameInstance.scoreManager.AddScore(scoreItem.GetPoint());
+            GameManager.shared.GetGameInstances().scoreManager.AddScore(scoreItem.GetPoint());
+
+            Debug.Log("U>> Yahoo goallll");
         }
-        Debug.Log("U>> Yahoo goallll");
+        
     }
 }
