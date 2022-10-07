@@ -1,109 +1,115 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class AudioPlayerControler : MonoBehaviour,IAudio
+namespace MyUtility
 {
-    [Header("Set Audio Clip (Optional)")]
-    [SerializeField] private AudioClip _clip;
-    [SerializeField] private bool _isBackgroundSound = false;
-
-    private AudioSource _audioSource;
-    private AudioManager.AudioState _currentAudioState = AudioManager.AudioState.Idle;
-    
-
-    private void Awake()
+    [RequireComponent(typeof(AudioSource))]
+    public class AudioPlayerControler : MonoBehaviour, IAudio
     {
-        AudioManager.onAudioStateChange += AudioStateChanged;
-    }
-    private void OnDestroy()
-    {
-        AudioManager.onAudioStateChange -= AudioStateChanged;
-    }
+        [Header("Set Audio Clip (Optional)")]
+        [SerializeField] private AudioClip _clip;
+        [SerializeField] private bool _isBackgroundSound = false;
+
+        private AudioSource _audioSource;
+        private AudioManager.AudioState _currentAudioState = AudioManager.AudioState.Idle;
 
 
-    public void PlaySound()
-    {
-        PlaySound(_clip, GetAudioSource());
-    }
-
-    public void PlaySound(AudioClip clip)
-    {
-        PlaySound(clip, GetAudioSource());
-    }
-
-    public void PlaySound(AudioClip clip, AudioSource source)
-    {
-        if (source != null && clip != null)
+        private void Awake()
         {
-            this._clip = clip;
-            this._audioSource = source;
-
-            source.clip = clip;
-            
-
-            if (AudioManager.instance.IsGameAudioOn() == true)
-            {
-                _currentAudioState = AudioManager.AudioState.Playing;
-                source.Play();
-            }else if(_isBackgroundSound == true)
-                _currentAudioState = AudioManager.AudioState.Pause;
-           
+            AudioManager.onAudioStateChange += AudioStateChanged;
         }
-    }
-
-    public void PauseSound()
-    {
-        if (GetAudioSource() != null && _clip != null)
+        private void OnDestroy()
         {
-            if(GetAudioSource().isPlaying == true)
-            {
-                GetAudioSource().Pause();
-                _currentAudioState = AudioManager.AudioState.Pause;
-            }
-               
+            AudioManager.onAudioStateChange -= AudioStateChanged;
         }
-    }
 
-    public void ResumeSound()
-    {
-        PlaySound();
-    }
 
-    public void StopSound()
-    {
-        if (GetAudioSource() != null && _clip != null)
+        public void PlaySound()
         {
-            if (GetAudioSource().isPlaying == true)
+            PlaySound(_clip, GetAudioSource());
+        }
+
+        public void PlaySound(AudioClip clip)
+        {
+            PlaySound(clip, GetAudioSource());
+        }
+
+        public void PlaySound(AudioClip clip, AudioSource source)
+        {
+            if (source != null && clip != null)
             {
-                GetAudioSource().Stop();
-                _currentAudioState = AudioManager.AudioState.Stop;
+                this._clip = clip;
+                this._audioSource = source;
+
+                source.clip = clip;
+
+
+                if (AudioManager.instance.IsGameAudioOn() == true)
+                {
+                    _currentAudioState = AudioManager.AudioState.Playing;
+                    source.Play();
+                }
+                else if (_isBackgroundSound == true)
+                    _currentAudioState = AudioManager.AudioState.Pause;
+
             }
         }
-    }
 
-    public AudioManager.AudioState GetCurrentAudioState()
-    {
-        return _currentAudioState;
-    }
-
-    private AudioSource GetAudioSource()
-    {
-        if (_audioSource == null)
-            _audioSource = this.gameObject.GetComponent<AudioSource>();
-        return _audioSource;
-    }
-
-    private void AudioStateChanged(bool isSoundOn)
-    {
-        if (isSoundOn)
+        public void PauseSound()
         {
-            if(_currentAudioState == AudioManager.AudioState.Pause && _isBackgroundSound == true)
-                ResumeSound();
+            if (GetAudioSource() != null && _clip != null)
+            {
+                if (GetAudioSource().isPlaying == true)
+                {
+                    GetAudioSource().Pause();
+                    _currentAudioState = AudioManager.AudioState.Pause;
+                }
+
+            }
         }
-        else
+
+        public void ResumeSound()
         {
-            PauseSound();
+            PlaySound();
         }
-    } 
-    
+
+        public void StopSound()
+        {
+            if (GetAudioSource() != null && _clip != null)
+            {
+                if (GetAudioSource().isPlaying == true)
+                {
+                    GetAudioSource().Stop();
+                    _currentAudioState = AudioManager.AudioState.Stop;
+                }
+            }
+        }
+
+        public AudioManager.AudioState GetCurrentAudioState()
+        {
+            return _currentAudioState;
+        }
+
+        private AudioSource GetAudioSource()
+        {
+            if (_audioSource == null)
+                _audioSource = this.gameObject.GetComponent<AudioSource>();
+            return _audioSource;
+        }
+
+        private void AudioStateChanged(bool isSoundOn)
+        {
+            if (isSoundOn)
+            {
+                if (_currentAudioState == AudioManager.AudioState.Pause && _isBackgroundSound == true)
+                    ResumeSound();
+            }
+            else
+            {
+                PauseSound();
+            }
+        }
+
+    }
 }
+
+

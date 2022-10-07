@@ -130,6 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForceInXandY: 1
   throwForceInZ: 100
+  _kickSound: {fileID: 0}
   rigidbody: {fileID: 2109253992420730039}
 --- !u!114 &2109253992420730036
 MonoBehaviour:

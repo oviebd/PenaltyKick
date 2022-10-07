@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackgroundSoundController : MonoBehaviour
+namespace MyUtility
 {
-    [SerializeField] private AudioClip _clip;
-    [SerializeField] private AudioPlayerControler _audioController;
 
-    private void Start()
+    public class BackgroundSoundController : MonoBehaviour
     {
-        _audioController.PlaySound(_clip);
+        [SerializeField] private AudioClip _clip;
+        [SerializeField] private AudioPlayerControler _audioController;
+
+        private void Start()
+        {
+            _audioController.PlaySound(_clip);
+        }
     }
+
 }

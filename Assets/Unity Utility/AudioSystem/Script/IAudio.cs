@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IAudio 
+namespace MyUtility
 {
-    void PlaySound();
-    void PlaySound(AudioClip clip);
-    void PlaySound(AudioClip clip,AudioSource source);
-    void PauseSound();
-    void ResumeSound();
-    void StopSound();
+    public interface IAudio
+    {
+        void PlaySound();
+        void PlaySound(AudioClip clip);
+        void PlaySound(AudioClip clip, AudioSource source);
+        void PauseSound();
+        void ResumeSound();
+        void StopSound();
+    }
 }
+
+
