@@ -13,6 +13,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private Sprite _spriteSoundOn;
     [SerializeField] private Sprite _spriteSoundOff;
 
+    private void Start()
+    {
+        SetSoundButtonGraphics();
+        PlayBackgroundSound();
+    }
+
     public void PlayKickSound()
     {
         _kickSound.PlaySound();
@@ -20,7 +26,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlayBackgroundSound()
     {
-        _bgSound.PlaySound();
+       // _bgSound.PlaySound();
     }
 
     private void Awake()
@@ -33,14 +39,12 @@ public class SoundManager : MonoBehaviour
         AudioManager.onAudioStateChange -= onSOundStateChange;
     }
 
-    private void Start()
-    {
-        SetSoundButtonGraphics();
-    }
+   
     public void OnSoundButtonClicked()
     {
         AudioManager.instance.ChangeGameAudioStatus();
         SetSoundButtonGraphics();
+        PlayBackgroundSound();
     }
 
 
