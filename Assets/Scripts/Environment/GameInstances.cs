@@ -11,5 +11,6 @@ public class GameInstances : MonoBehaviour
     public SoundManager soundManager;
 
     public UiManager uiManager;
+    public InGameUI inGameUI;
     
 }

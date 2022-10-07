@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -22,13 +20,29 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        StartGame();
+        GetGameInstances().uiManager.showStartGameUI();
+       // StartNewGame();
     }
 
-    private void StartGame()
+    public void StartNewGame()
     {
-        _gameInstance.levelManager.PrepareGame(kickPerGame);
-        _gameInstance.uiManager.SetInitialGameUI(kickPerGame);
+        GetGameInstances().uiManager.ShowRestartPanel(() => {
+            GetGameInstances().uiManager.showInGameUI();
+            GetGameInstances().inGameUI.setUpIngameUI(kickPerGame);
+        });
+
+        GetGameInstances().levelManager.PrepareGame(kickPerGame);
+      
+    }
+
+    public void RestartGame()
+    {
+        StartNewGame();
+    }
+
+    public void GameOver()
+    {
+        GetGameInstances().uiManager.showGameOverUI();
     }
 
     public GameInstances GetGameInstances()

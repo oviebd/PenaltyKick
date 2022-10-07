@@ -29,11 +29,11 @@ public class LevelManager : MonoBehaviour
         return _currentKickNumber;
     }
 
+    // Setting Up A Game 
     public void PrepareGame(int kickNumber)
     {
+        ResetLevel();
         _maxKick = kickNumber;
-        _currentKickNumber = 0;
-        _isGameOver = false;
         PrepareForKick();
     }
 
@@ -48,6 +48,18 @@ public class LevelManager : MonoBehaviour
     {
         GameObject ball = Instantiate(ballPrefab);
         ball.transform.parent = ballSpwanerParent.transform;
+    }
+
+    private void DestroyAllBalls()
+    {
+        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
+        for (int i = 0; i < balls.Length; i++)
+        {
+            if (balls[i] != null)
+            {
+                Destroy(balls[i]);
+            }
+        }
     }
 
     private void SetTargets()
@@ -65,7 +77,9 @@ public class LevelManager : MonoBehaviour
 
     private void ResetLevel()
     {
-
+        DestroyAllBalls();
+        _currentKickNumber = 0;
+        _isGameOver = false;
     }
 
 
@@ -77,6 +91,7 @@ public class LevelManager : MonoBehaviour
         if (_currentKickNumber >= _maxKick)
         {
             _isGameOver = true;
+            GameManager.shared.GameOver();
             Debug.Log("Game Over ...");
         }
         else

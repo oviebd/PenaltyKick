@@ -55,6 +55,7 @@ public class InGameUI : MonoBehaviour
         {
             GameObject item = Instantiate(kickCountItemUI);
             item.transform.parent = kickCountItemParent.transform;
+            item.transform.localScale = new Vector3(1, 1, 1);
             KickCountUiItem itemScript = item.GetComponent<KickCountUiItem>();
             kickUiItems.Add(itemScript);
         }
