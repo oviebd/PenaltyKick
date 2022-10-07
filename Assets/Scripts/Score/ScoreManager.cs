@@ -20,7 +20,7 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int score)
     {
         _currenrScore = score + _currenrScore;
-        Debug.Log("U>> Current SCore " + _currenrScore);
+       // Debug.Log("U>> Current SCore " + _currenrScore);
         GameManager.shared.GetGameInstances().uiManager.UpdateScore(_currenrScore);
        
     }

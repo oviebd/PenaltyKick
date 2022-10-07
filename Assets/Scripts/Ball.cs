@@ -31,13 +31,15 @@ public class Ball : MonoBehaviour, ICollisionEnter
 
         if (Input.GetMouseButtonUp(0))
         {
-            touchTimeFinish = Time.time;
-
-            // calculate swipe time interval 
-            timeInterval = touchTimeFinish - touchTimeStart;
-
-            // getting release finger position
             endPos = Input.mousePosition;
+            touchTimeFinish = Time.time;
+            timeInterval = touchTimeFinish - touchTimeStart;
+            float distance = Vector3.Distance(startPos, endPos);
+           // Debug.Log("U>> D - " + distance + " time " + timeInterval);
+
+            //timeInterval <= .5 ||
+            if ( distance < 100)
+                return;
 
             // calculating swipe direction in 2D space
             direction = startPos - endPos;
@@ -75,7 +77,7 @@ public class Ball : MonoBehaviour, ICollisionEnter
             StopAllCoroutines();
             StartCoroutine(OnKickCompleteAction(2, scoreItem.GetPoint()));
         }
-        Debug.Log("U>> Yahoo goallll  " + collidedObj.gameObject.name);
+        //Debug.Log("U>> Yahoo goallll  " + collidedObj.gameObject.name);
         IReacatble reactable = collidedObj.GetComponent<IReacatble>();
         reactable?.ReactOnCollide();
 
