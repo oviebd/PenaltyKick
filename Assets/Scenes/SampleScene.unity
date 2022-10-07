@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.7180839, g: 0.80161786, b: 0.8804225, a: 1}
+  m_IndirectSpecularColor: {r: 0.6940857, g: 0.7817568, b: 0.8656331, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1344,7 +1344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &435622930
 Transform:
   m_ObjectHideFlags: 0
@@ -2692,7 +2692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c41c6fa811d24181810871af8753cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clip: {fileID: 8300000, guid: f9098c9caef96440a838dbe899422954, type: 3}
+  _clip: {fileID: 8300000, guid: b9a12e0ea3fbc495387c107154754f0f, type: 3}
   _isBackgroundSound: 0
 --- !u!82 &994148207
 AudioSource:
@@ -4243,6 +4243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86eac2138549e444d9293c3f49e3a604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  kickSoundClip: {fileID: 8300000, guid: b9a12e0ea3fbc495387c107154754f0f, type: 3}
+  targetCollideSoundClip: {fileID: 8300000, guid: c408c3d9f2ab94a9083f86b79719027a, type: 3}
   _kickSound: {fileID: 994148206}
   _bgSound: {fileID: 1978411341}
   _soundSettingButton: {fileID: 656900332}
@@ -5055,8 +5057,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c41c6fa811d24181810871af8753cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clip: {fileID: 8300000, guid: 401a0f26e13d9426aa7c52e9c98e20fa, type: 3}
-  _isBackgroundSound: 0
+  _clip: {fileID: 8300000, guid: 483b0a2f1ba6142a48dc24e7a94bc1ec, type: 3}
+  _isBackgroundSound: 1
 --- !u!82 &1978411342
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5872,6 +5874,18 @@ PrefabInstance:
     - target: {fileID: 896062701594264547, guid: 527db68626492420e895d3096a06d66d, type: 3}
       propertyPath: m_Name
       value: Target Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265948750572909121, guid: 527db68626492420e895d3096a06d66d, type: 3}
+      propertyPath: target.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265948750572909121, guid: 527db68626492420e895d3096a06d66d, type: 3}
+      propertyPath: target.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265948750572909121, guid: 527db68626492420e895d3096a06d66d, type: 3}
+      propertyPath: target.z
+      value: -3.78
       objectReference: {fileID: 0}
     - target: {fileID: 7580117781205331112, guid: 527db68626492420e895d3096a06d66d, type: 3}
       propertyPath: m_RootOrder

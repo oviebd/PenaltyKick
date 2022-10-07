@@ -9,15 +9,16 @@ public class Mover : MonoBehaviour
     public int time = 5;
 
 
-    void Start()
-    {
-        transform.DOLocalMove(target, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
-    }
+    //void Start()
+    //{
+    //    Sequence sequence = DOTween.Sequence();
+    //    sequence.Append(transform.DOLocalMove(target, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo));
+    //}
 
-    private void onComlete()
-    {
+    //private void onComlete()
+    //{
 
-    }
+    //}
 
-
+   
 }

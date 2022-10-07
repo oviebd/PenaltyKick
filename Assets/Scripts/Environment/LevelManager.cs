@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
     // Setting Up A Game 
     public void PrepareGame(int kickNumber)
     {
-        ResetLevel();
+       // ResetLevel();
         _maxKick = kickNumber;
         PrepareForKick();
     }
@@ -75,7 +75,7 @@ public class LevelManager : MonoBehaviour
         targetSetList[index].SetActive(true);
     }
 
-    private void ResetLevel()
+    public void ResetLevel()
     {
         DestroyAllBalls();
         _currentKickNumber = 0;

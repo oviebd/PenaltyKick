@@ -6,8 +6,13 @@ using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
+    [SerializeField] private AudioClip kickSoundClip;
+    [SerializeField] private AudioClip targetCollideSoundClip;
+
+
     [SerializeField] private AudioPlayerControler _kickSound;
     [SerializeField] private AudioPlayerControler _bgSound;
+
 
     [SerializeField] private Image _soundSettingButton;
     [SerializeField] private Sprite _spriteSoundOn;
@@ -21,10 +26,20 @@ public class SoundManager : MonoBehaviour
 
     public void PlayKickSound()
     {
-        _kickSound.PlaySound();
+        _kickSound.PlaySound(kickSoundClip);
+    }
+
+    public void PlayTargetCollideSound()
+    {
+        _kickSound.PlaySound(targetCollideSoundClip);
     }
 
     public void PlayBackgroundSound()
+    {
+       // _bgSound.PlaySound();
+    }
+
+    public void StopBackgroundSound()
     {
        // _bgSound.PlaySound();
     }
