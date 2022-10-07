@@ -6,6 +6,9 @@ public class ScoreManager : MonoBehaviour
 {
     private int _currenrScore = 0;
 
+    public delegate void OnScoreUpdated(int updatedScore);
+    public static event OnScoreUpdated onScoreUpdated;
+
     private void OnEnable()
     {
         GameManager.shared.onKickCompleted += AddScore;
@@ -17,11 +20,12 @@ public class ScoreManager : MonoBehaviour
         GameManager.shared.onKickCompleted -= AddScore;
     }
 
-    public void AddScore(int score)
+    public void AddScore(int score, int kickNumber)
     {
         _currenrScore = score + _currenrScore;
+        onScoreUpdated?.Invoke(_currenrScore);
        // Debug.Log("U>> Current SCore " + _currenrScore);
-        GameManager.shared.GetGameInstances().uiManager.UpdateScore(_currenrScore);
+       // GameManager.shared.GetGameInstances().uiManager.UpdateScore(_currenrScore);
        
     }
 

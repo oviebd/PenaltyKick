@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     int kickPerGame = 5;
 
-    public delegate void OnKickedCompleted(int Score);
+    public delegate void OnKickedCompleted(int Score, int kickNumber);
     public event OnKickedCompleted onKickCompleted;
 
     private void Awake()
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     public void OnBallKicked(int score)
     {
-        onKickCompleted?.Invoke(score);
+       onKickCompleted?.Invoke(score, _gameInstance.levelManager.GetCurrentKickNumber());
     }
 
 

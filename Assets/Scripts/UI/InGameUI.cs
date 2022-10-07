@@ -15,6 +15,19 @@ public class InGameUI : MonoBehaviour
     List<KickCountUiItem> kickUiItems = new List<KickCountUiItem>();
 
 
+    private void OnEnable()
+    {
+        GameManager.shared.onKickCompleted += OnKickCompleted;
+        ScoreManager.onScoreUpdated += UpdateScoreCount;
+    }
+
+
+    private void OnDestroy()
+    {
+        GameManager.shared.onKickCompleted -= OnKickCompleted;
+        ScoreManager.onScoreUpdated -= UpdateScoreCount;
+    }
+
     public void setUpIngameUI(int kickNumber)
     {
        // layoutGroup.enabled = false;
@@ -46,6 +59,18 @@ public class InGameUI : MonoBehaviour
             kickUiItems.Add(itemScript);
         }
     }
+
+
+    public void OnKickCompleted(int score, int currentKickNumber)
+    {
+
+        if (score > 0)
+            UpdateKickCountUI(currentKickNumber, KickCountUiItem.ITEM_TYPE.RIGHT);
+        else
+            UpdateKickCountUI(currentKickNumber, KickCountUiItem.ITEM_TYPE.MISS);
+
+    }
+
 
     void DestroyAllKickCountUiItems()
     {
