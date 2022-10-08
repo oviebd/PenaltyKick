@@ -9,6 +9,8 @@ public class Ball : MonoBehaviour, ICollisionEnter
     Vector2 startPos, endPos, direction; // touch start position, touch end position, swipe direction
     float touchTimeStart, touchTimeFinish, timeInterval; // to calculate swipe time to sontrol throw force in Z direction
 
+    public Vector3 ballForce;
+
     [SerializeField]
     float throwForceInXandY = 1f; // to control throw force in X and Y directions
 
@@ -43,14 +45,22 @@ public class Ball : MonoBehaviour, ICollisionEnter
 
             // calculating swipe direction in 2D space
             direction = startPos - endPos;
+            direction = direction.normalized;
+
+            Vector3 force = new Vector3( -direction.x * 250, -direction.y * 70, -direction.y * 210);
+
+            Debug.Log("U>> direction " + direction + " force  " + force);
 
             // add force to balls rigidbody in 3D space depending on swipe time, direction and throw forces
             rigidbody.isKinematic = false;
-            rigidbody.AddForce(-direction.x * throwForceInXandY, -direction.y * throwForceInXandY, throwForceInZ / timeInterval);
+            rigidbody.AddForce(force);
+          //  rigidbody.AddForce(ballForce);
+          //  rigidbody.AddForce(-direction.x * throwForceInXandY, -direction.y * throwForceInXandY, throwForceInZ / timeInterval);
+            //rigidbody.AddForce(-direction.x * throwForceInXandY, -direction.y * throwForceInXandY, throwForceInZ / timeInterval);
 
             GameManager.shared.GetGameInstances().soundManager.PlayKickSound();
            
-            StartCoroutine(OnKickCompleteAction(4.0f,0));
+            StartCoroutine(OnKickCompleteAction(3.0f,0));
         }
     }
 
@@ -75,7 +85,7 @@ public class Ball : MonoBehaviour, ICollisionEnter
         {
             isScoredByThisBall = true;
             StopAllCoroutines();
-            StartCoroutine(OnKickCompleteAction(2, scoreItem.GetPoint()));
+            StartCoroutine(OnKickCompleteAction(3, scoreItem.GetPoint()));
         }
         //Debug.Log("U>> Yahoo goallll  " + collidedObj.gameObject.name);
         IReacatble reactable = collidedObj.GetComponent<IReacatble>();
