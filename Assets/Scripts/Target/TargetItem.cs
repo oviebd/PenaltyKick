@@ -34,10 +34,11 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
     [SerializeField] private MOVE_DIRECTION moveDirection = MOVE_DIRECTION.None;
     [SerializeField] private float destinationValue;
 
+    DataManager _dataManager;
 
     private void Awake()
     {
-       
+        _dataManager = new DataManager(new LocalDataFetcher());
         initialPos = transform.localPosition;
        // Debug.Log("Awake  " + initialPos);
         _rb = gameObject.GetComponent<Rigidbody>();
@@ -92,7 +93,8 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
 
     public void ResetItem()
     {
-        SetPoint(1);
+
+        SetPoint(_dataManager.GetTargetValue_notMoveable());
         _isItCollidedByBall = false;
 
         _rb.velocity = Vector3.zero;
@@ -108,7 +110,8 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
 
         if (moveDirection != MOVE_DIRECTION.None)
         {
-            SetPoint(Random.Range(2, 10));
+            SetPoint(Random.Range(_dataManager.GetMinTargetValue_moveable(),
+                                _dataManager.GetMaxTargetValue_moveable()));
             StartCoroutine(StartMovement());
         }
     }

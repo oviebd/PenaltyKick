@@ -40,7 +40,7 @@ public class Ball : MonoBehaviour, ICollisionEnter
             timeInterval = touchTimeFinish - touchTimeStart;
             float distance = Vector3.Distance(startPos, endPos);
             float t = distance / (timeInterval * 100);
-            Debug.Log("U>> D - " + distance + " time " + timeInterval + "  t " + t);
+           // Debug.Log("U>> D - " + distance + " time " + timeInterval + "  t " + t);
 
             if ( distance < 100)
                 return;
@@ -54,7 +54,7 @@ public class Ball : MonoBehaviour, ICollisionEnter
 
             // add force to balls rigidbody in 3D space depending on swipe time, direction and throw forces
             Vector3 force = new Vector3(-direction.x * 200, t * 1.5f, t * 9);
-            Debug.Log("U>> direction " + direction + " force  " + force);
+            //Debug.Log("U>> direction " + direction + " force  " + force);
             rigidbody.isKinematic = false;
             rigidbody.AddForce(force);
       

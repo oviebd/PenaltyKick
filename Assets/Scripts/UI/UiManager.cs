@@ -13,6 +13,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private PanelBase restartPanel;
 
     [SerializeField] private TMP_Text gameOverScore;
+    [SerializeField] private TMP_Text tutorialText;
 
     PanelBase _currentPanel;
     PanelBase _prevPanel;
@@ -47,6 +48,9 @@ public class UiManager : MonoBehaviour
     {
         _prevPanel = _currentPanel;
         _currentPanel = tutorialUI;
+
+        string data = new DataManager(new LocalDataFetcher()).GetTutorial();
+        tutorialText.text = data;
 
         ShowAppearAnimation();
     }
