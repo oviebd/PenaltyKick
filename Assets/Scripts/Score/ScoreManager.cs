@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
     public delegate void OnScoreUpdated(int updatedScore);
     public static event OnScoreUpdated onScoreUpdated;
 
+
     private void OnEnable()
     {
         GameManager.shared.onKickCompleted += AddScore;
@@ -27,6 +28,16 @@ public class ScoreManager : MonoBehaviour
        // Debug.Log("U>> Current SCore " + _currenrScore);
        // GameManager.shared.GetGameInstances().uiManager.UpdateScore(_currenrScore);
        
+    }
+
+    public int GetScore()
+    {
+        return _currenrScore;
+    }
+
+    public void ResetScore()
+    {
+        _currenrScore = 0;
     }
 
 

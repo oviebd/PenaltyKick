@@ -64,7 +64,7 @@ public class LevelManager : MonoBehaviour
 
     private void SetTargets()
     {
-        int index = 0;//Random.Range(0, targetSetList.Count);
+        int index = Random.Range(0, targetSetList.Count);
 
         for(int i = 0; i < targetSetList.Count; i++)
         {

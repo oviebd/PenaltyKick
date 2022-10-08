@@ -22,7 +22,7 @@ public class PanelBase : MonoBehaviour
     public void PlayAppearingAnimation (Action action)
     {
         this.gameObject.transform.localScale = Vector3.zero;
-        this.gameObject.transform.DOScale(1, 1).SetEase(Ease.InOutSine).OnComplete(action.Invoke);
+        this.gameObject.transform.DOScale(1, 0.5f).SetEase(Ease.InOutSine).OnComplete(action.Invoke);
     }
 
     public void PlayDisAppearingAnimation(Action action)

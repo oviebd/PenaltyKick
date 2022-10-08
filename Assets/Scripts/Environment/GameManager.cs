@@ -20,17 +20,18 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        GetGameInstances().uiManager.showStartGameUI();
+        GetGameInstances().uiManager.ShowStartGameUI();
        // StartNewGame();
     }
 
     public void StartNewGame()
     {
         GetGameInstances().levelManager.ResetLevel();
+        GetGameInstances().scoreManager.ResetScore();
 
         GetGameInstances().uiManager.ShowRestartPanel(() => {
             GetGameInstances().levelManager.PrepareGame(kickPerGame);
-            GetGameInstances().uiManager.showInGameUI();
+            GetGameInstances().uiManager.ShowInGameUI();
             GetGameInstances().inGameUI.setUpIngameUI(kickPerGame);
             GetGameInstances().soundManager.PlayBackgroundSound();
         });
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         GetGameInstances().soundManager.StopBackgroundSound();
-        GetGameInstances().uiManager.showGameOverUI();
+        GetGameInstances().uiManager.ShowGameOverUI();
     }
 
     public GameInstances GetGameInstances()

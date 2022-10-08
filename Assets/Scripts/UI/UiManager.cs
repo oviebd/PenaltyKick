@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UiManager : MonoBehaviour
 {
@@ -11,11 +12,12 @@ public class UiManager : MonoBehaviour
     [SerializeField] private PanelBase tutorialUI;
     [SerializeField] private PanelBase restartPanel;
 
+    [SerializeField] private TMP_Text gameOverScore;
 
     PanelBase _currentPanel;
     PanelBase _prevPanel;
 
-    public void showInGameUI()
+    public void ShowInGameUI()
     {
         _prevPanel = _currentPanel;
         _currentPanel = inGameUI;
@@ -23,28 +25,36 @@ public class UiManager : MonoBehaviour
         ShowAppearAnimation();
     }
 
-    public void showStartGameUI()
+    public void ShowStartGameUI()
     {
-
         _prevPanel = startGameUI;
         _currentPanel = startGameUI;
 
         ShowAppearAnimation();
     }
 
-    public void showGameOverUI()
+    public void ShowGameOverUI()
     {
         _prevPanel = _currentPanel;
         _currentPanel = gameOverUI;
 
+        gameOverScore.text = "Score - " + GameManager.shared.GetGameInstances().scoreManager.GetScore() ;
+
         ShowAppearAnimation();
     }
 
-    public void showTutorialUI()
+    public void ShowTutorialUI()
     {
-
         _prevPanel = _currentPanel;
         _currentPanel = tutorialUI;
+
+        ShowAppearAnimation();
+    }
+
+    public void HideTutorialPanel()
+    {
+        _currentPanel = _prevPanel;
+        _prevPanel = tutorialUI;
 
         ShowAppearAnimation();
     }
@@ -82,14 +92,6 @@ public class UiManager : MonoBehaviour
         //}
     }
 
-    //private void HideAll()
-    //{
-    //    inGameUI.Hide();
-    //    startGameUI.Hide();
-    //    gameOverUI.Hide();
-    //    tutorialUI.Hide();
-    //}
-
     public void StartButtonClicked()
     {
         GameManager.shared.StartNewGame();
@@ -102,7 +104,7 @@ public class UiManager : MonoBehaviour
 
     public void TutorialButtonClicked()
     {
-       // GameManager.shared.t();
+        ShowTutorialUI();
     }
 
 }

@@ -8,11 +8,24 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
 {
     [SerializeField] private int _point = 1;
     [SerializeField] private TMP_Text pointText;
-    public bool isMoveable = false;
+   
 
     [SerializeField]public Vector3 target;
     [SerializeField]public int time = 5;
     private Sequence sequence;
+
+    private enum MOVE_DIRECTION
+    {
+        None,
+        X,
+        Y,
+        Z
+    }
+
+    //[SerializeField] private bool isMoveable = false;
+    [SerializeField] private MOVE_DIRECTION moveDirection = MOVE_DIRECTION.None;
+    [SerializeField] private float destinationValue;
+
 
 
     public int GetPoint()
@@ -43,7 +56,7 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
     private void OnEnable()
     {
         SetPoint(1);
-        if (isMoveable)
+        if (moveDirection != MOVE_DIRECTION.None)
         {
             SetPoint(Random.Range(2,10));
             StartMovement();
@@ -53,7 +66,24 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
     private void StartMovement()
     {
         sequence = DOTween.Sequence();
-        sequence.Append(transform.DOLocalMove(target, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo));
+
+        switch (moveDirection)
+        {
+            case MOVE_DIRECTION.X:
+                sequence.Append(transform.DOLocalMoveX(destinationValue, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo));
+                break;
+            case MOVE_DIRECTION.Y:
+                sequence.Append(transform.DOLocalMoveY(destinationValue, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo));
+                break;
+
+            case MOVE_DIRECTION.Z:
+                sequence.Append(transform.DOLocalMoveZ(destinationValue, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo));
+                break;
+        }
+       // sequence.Append(transform.DOLocalMove(target, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo));
+
+
+     
     }
 
     private void OnDisable()
