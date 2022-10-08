@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour
     private int _currentKickNumber = 0; 
     private bool _isGameOver = false;
 
+
     private void OnEnable()
     {
         GameManager.shared.onKickCompleted += OnKickCompleted;
@@ -32,15 +33,17 @@ public class LevelManager : MonoBehaviour
     // Setting Up A Game 
     public void PrepareGame(int kickNumber)
     {
-       // ResetLevel();
+        ResetLevel();
         _maxKick = kickNumber;
         PrepareForKick();
+
+        SetTargets();
     }
 
     private void PrepareForKick()
     {
         SpawnBall();
-        SetTargets();
+        
     }
 
   
@@ -65,14 +68,8 @@ public class LevelManager : MonoBehaviour
     private void SetTargets()
     {
         int index = Random.Range(0, targetSetList.Count);
-
-        for(int i = 0; i < targetSetList.Count; i++)
-        {
-            targetSetList[i].SetActive(false);
-           //TargetItem item = targetSetList[i].GetComponent<TargetItem>();
-        }
-
         targetSetList[index].SetActive(true);
+      
     }
 
     public void ResetLevel()
@@ -80,9 +77,12 @@ public class LevelManager : MonoBehaviour
         DestroyAllBalls();
         _currentKickNumber = 0;
         _isGameOver = false;
+
+        for (int i = 0; i < targetSetList.Count; i++)
+        {
+            targetSetList[i].SetActive(false);
+        }
     }
-
-
 
     public void OnKickCompleted(int score, int currentKickNumber)
     {

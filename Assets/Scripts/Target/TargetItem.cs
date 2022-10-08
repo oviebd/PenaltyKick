@@ -6,13 +6,21 @@ using DG.Tweening;
 
 public class TargetItem : MonoBehaviour, IScore,IReacatble
 {
-    [SerializeField] private int _point = 1;
+
     [SerializeField] private TMP_Text pointText;
    
-
-    [SerializeField]public Vector3 target;
     [SerializeField]public int time = 5;
+
+
+    private bool _isItCollidedByBall = false;
     private Sequence sequence;
+    private Vector3 initialPos;
+    private Rigidbody _rb;
+    private int _point = 1;
+    private MeshRenderer _meshRenderer;
+    private Collider _collider;
+    private Canvas _canvas;
+
 
     private enum MOVE_DIRECTION
     {
@@ -27,19 +35,29 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
     [SerializeField] private float destinationValue;
 
 
+    private void Awake()
+    {
+       
+        initialPos = transform.localPosition;
+       // Debug.Log("Awake  " + initialPos);
+        _rb = gameObject.GetComponent<Rigidbody>();
+        _collider = gameObject.GetComponent<Collider>();
+        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        _canvas = gameObject.GetComponentInChildren<Canvas>();
+    }
 
     public int GetPoint()
     {
         return _point;
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.A))
-    //    {
-    //        ReactOnCollide();
-    //    }
-    //}
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            ReactOnCollide();
+        }
+    }
 
     public void SetPoint(int point)
     {
@@ -48,23 +66,58 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
     }
 
 
-    public void Disable()
+    private IEnumerator DisableItem(float time)
     {
-        gameObject.SetActive(false);
+        yield return new WaitForSeconds(time);
+       
+
+        SetPoint(0);
+        sequence?.Kill();
+
+        _meshRenderer.enabled = false;
+        _collider.enabled = false;
+        _canvas.gameObject.SetActive(false);
     }
+
 
     private void OnEnable()
     {
+        ResetItem();
+    }
+
+    private void OnDisable()
+    {
+        sequence?.Kill();
+    }
+
+    public void ResetItem()
+    {
         SetPoint(1);
+        _isItCollidedByBall = false;
+
+        _rb.velocity = Vector3.zero;
+        _rb.angularVelocity = Vector3.zero;
+
+        transform.localPosition = initialPos;
+        transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+
+        _meshRenderer.enabled = true;
+        _collider.enabled = true;
+        _canvas.gameObject.SetActive(true);
+
         if (moveDirection != MOVE_DIRECTION.None)
         {
-            SetPoint(Random.Range(2,10));
-            StartMovement();
+            SetPoint(Random.Range(2, 10));
+            StartCoroutine(StartMovement());
         }
     }
 
-    private void StartMovement()
+
+    private IEnumerator StartMovement()
     {
+
+        yield return new WaitForSeconds(1.0f);
         sequence = DOTween.Sequence();
 
         switch (moveDirection)
@@ -79,27 +132,23 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
             case MOVE_DIRECTION.Z:
                 sequence.Append(transform.DOLocalMoveZ(destinationValue, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo));
                 break;
-        }
-       // sequence.Append(transform.DOLocalMove(target, time).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo));
-
-
-     
+        }  
     }
 
-    private void OnDisable()
-    {
-        SetPoint(0);
-        sequence?.Kill();
-    }
+   
 
     public void ReactOnCollide()
     {
+        _isItCollidedByBall = true;
         sequence?.Kill();
         GameManager.shared.GetGameInstances().soundManager.PlayTargetCollideSound();
-        Debug.Log("Destroy Item...");
+        StartCoroutine(DisableItem(1.0f));
+
     }
 }
 
+
+// ALl object which will react externally (like explode/sound) with collision will implement this.
 public interface IReacatble
 {
     void ReactOnCollide();

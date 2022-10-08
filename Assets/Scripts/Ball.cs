@@ -18,12 +18,14 @@ public class Ball : MonoBehaviour, ICollisionEnter
     float throwForceInZ = 50f; // to control throw force in Z direction
 
     public Rigidbody rigidbody;
-    private bool isScoredByThisBall = false;
-
+    private bool _isScoredByThisBall = false;
+    private bool _isBallKicked = false;
 
 
     private void Update()
     {
+        if (_isBallKicked)
+            return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -37,9 +39,9 @@ public class Ball : MonoBehaviour, ICollisionEnter
             touchTimeFinish = Time.time;
             timeInterval = touchTimeFinish - touchTimeStart;
             float distance = Vector3.Distance(startPos, endPos);
-           // Debug.Log("U>> D - " + distance + " time " + timeInterval);
+            float t = distance / (timeInterval * 100);
+            Debug.Log("U>> D - " + distance + " time " + timeInterval + "  t " + t);
 
-            //timeInterval <= .5 ||
             if ( distance < 100)
                 return;
 
@@ -47,19 +49,18 @@ public class Ball : MonoBehaviour, ICollisionEnter
             direction = startPos - endPos;
             direction = direction.normalized;
 
-            Vector3 force = new Vector3( -direction.x * 250, -direction.y * 70, -direction.y * 210);
+            // Vector3 force = new Vector3( -direction.x * 250, -direction.y * 70, -direction.y * 210);
 
-            Debug.Log("U>> direction " + direction + " force  " + force);
 
             // add force to balls rigidbody in 3D space depending on swipe time, direction and throw forces
+            Vector3 force = new Vector3(-direction.x * 200, t * 1.5f, t * 9);
+            Debug.Log("U>> direction " + direction + " force  " + force);
             rigidbody.isKinematic = false;
             rigidbody.AddForce(force);
-          //  rigidbody.AddForce(ballForce);
-          //  rigidbody.AddForce(-direction.x * throwForceInXandY, -direction.y * throwForceInXandY, throwForceInZ / timeInterval);
-            //rigidbody.AddForce(-direction.x * throwForceInXandY, -direction.y * throwForceInXandY, throwForceInZ / timeInterval);
+      
 
             GameManager.shared.GetGameInstances().soundManager.PlayKickSound();
-           
+            _isBallKicked = true;
             StartCoroutine(OnKickCompleteAction(3.0f,0));
         }
     }
@@ -76,17 +77,18 @@ public class Ball : MonoBehaviour, ICollisionEnter
 
     public void onCollisionEnter(GameObject collidedObj)
     {
-        if (isScoredByThisBall)
+        if (_isScoredByThisBall)
             return;
 
         IScore scoreItem = collidedObj.GetComponent<IScore>();
 
         if (scoreItem != null)
         {
-            isScoredByThisBall = true;
+            _isScoredByThisBall = true;
             StopAllCoroutines();
             StartCoroutine(OnKickCompleteAction(3, scoreItem.GetPoint()));
         }
+        this.gameObject.layer = LayerMask.NameToLayer("Default");
         //Debug.Log("U>> Yahoo goallll  " + collidedObj.gameObject.name);
         IReacatble reactable = collidedObj.GetComponent<IReacatble>();
         reactable?.ReactOnCollide();
