@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private AudioPlayerControler _kickSound;
     [SerializeField] private AudioPlayerControler _bgSound;
+    [SerializeField] private AudioPlayerControler _celebrationSound;
 
 
     [SerializeField] private Image _soundSettingButton;
@@ -29,6 +30,12 @@ public class SoundManager : MonoBehaviour
         _kickSound.PlaySound(kickSoundClip);
     }
 
+    public void PlayCelebrationSound()
+    {
+        _celebrationSound.PlaySound();
+    }
+
+
     public void PlayTargetCollideSound()
     {
         _kickSound.PlaySound(targetCollideSoundClip);
@@ -36,12 +43,12 @@ public class SoundManager : MonoBehaviour
 
     public void PlayBackgroundSound()
     {
-       // _bgSound.PlaySound();
+        _bgSound.PlaySound();
     }
 
     public void StopBackgroundSound()
     {
-       // _bgSound.PlaySound();
+        _bgSound.PlaySound();
     }
 
     private void Awake()

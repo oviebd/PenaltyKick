@@ -147,6 +147,11 @@ public class TargetItem : MonoBehaviour, IScore,IReacatble
         GameManager.shared.GetGameInstances().soundManager.PlayTargetCollideSound();
         StartCoroutine(DisableItem(1.0f));
 
+        GameManager.shared.GetGameInstances().soundManager.PlayCelebrationSound();
+        GameObject particleObj = Instantiate(GameManager.shared.GetGameInstances().particle_goalText);
+        particleObj.transform.position = new Vector3(0, 5, 0);
+        Destroy(particleObj, 3.0f);
+
     }
 }
 

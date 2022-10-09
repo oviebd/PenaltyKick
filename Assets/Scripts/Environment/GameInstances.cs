@@ -12,5 +12,7 @@ public class GameInstances : MonoBehaviour
 
     public UiManager uiManager;
     public InGameUI inGameUI;
+
+    public GameObject particle_goalText;
     
 }

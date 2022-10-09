@@ -9,15 +9,8 @@ public class Ball : MonoBehaviour, ICollisionEnter
     Vector2 startPos, endPos, direction; // touch start position, touch end position, swipe direction
     float touchTimeStart, touchTimeFinish, timeInterval; // to calculate swipe time to sontrol throw force in Z direction
 
-    public Vector3 ballForce;
-
-    [SerializeField]
-    float throwForceInXandY = 1f; // to control throw force in X and Y directions
-
-    [SerializeField]
-    float throwForceInZ = 50f; // to control throw force in Z direction
-
     public Rigidbody rigidbody;
+
     private bool _isScoredByThisBall = false;
     private bool _isBallKicked = false;
 
@@ -39,8 +32,8 @@ public class Ball : MonoBehaviour, ICollisionEnter
             touchTimeFinish = Time.time;
             timeInterval = touchTimeFinish - touchTimeStart;
             float distance = Vector3.Distance(startPos, endPos);
-            float t = distance / (timeInterval * 100);
-           // Debug.Log("U>> D - " + distance + " time " + timeInterval + "  t " + t);
+            float swipeVelocity = distance / (timeInterval * 1000); // Time interval is in milisecond. so convert it into seconds
+           // Debug.Log("U>> D - " + distance + " time " + timeInterval + "  swipeVelocity " + swipeVelocity);
 
             if ( distance < 100)
                 return;
@@ -49,13 +42,13 @@ public class Ball : MonoBehaviour, ICollisionEnter
             direction = startPos - endPos;
             direction = direction.normalized;
 
-            // Vector3 force = new Vector3( -direction.x * 250, -direction.y * 70, -direction.y * 210);
 
-
-            // add force to balls rigidbody in 3D space depending on swipe time, direction and throw forces
-            Vector3 force = new Vector3(-direction.x * 200, t * 1.5f, t * 9);
+            // add force to balls rigidbody in 3D space depending on swipe time and direction
+            // first calculate the swipe x direction. Y and Z force would be based on swipe speed.
+            // I found 200, 15 and 90 is good for this game. 
+            Vector3 force = new Vector3(-direction.x * 200, swipeVelocity * 15, swipeVelocity * 90);
             //Debug.Log("U>> direction " + direction + " force  " + force);
-            rigidbody.isKinematic = false;
+           // rigidbody.isKinematic = false;
             rigidbody.AddForce(force);
       
 

@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour
             GetGameInstances().levelManager.PrepareGame(kickPerGame);
             GetGameInstances().uiManager.ShowInGameUI();
             GetGameInstances().inGameUI.setUpIngameUI(kickPerGame);
-            GetGameInstances().soundManager.PlayBackgroundSound();
         });
 
         
@@ -47,7 +46,6 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        GetGameInstances().soundManager.StopBackgroundSound();
         GetGameInstances().uiManager.ShowGameOverUI();
     }
 
