@@ -45,10 +45,9 @@ public class Ball : MonoBehaviour, ICollisionEnter
 
             // add force to balls rigidbody in 3D space depending on swipe time and direction
             // first calculate the swipe x direction. Y and Z force would be based on swipe speed.
-            // I found 200, 15 and 90 is good for this game. 
-            Vector3 force = new Vector3(-direction.x * 200, swipeVelocity * 15, swipeVelocity * 90);
-            //Debug.Log("U>> direction " + direction + " force  " + force);
-           // rigidbody.isKinematic = false;
+            // I found 200, 20 and 50 is good for this game. 
+            Vector3 force = new Vector3(-direction.x * 200, swipeVelocity * 20f, swipeVelocity * 50);
+           // Debug.Log("U>> direction " + direction + " force  " + force);
             rigidbody.AddForce(force);
       
 
@@ -80,6 +79,8 @@ public class Ball : MonoBehaviour, ICollisionEnter
             _isScoredByThisBall = true;
             StopAllCoroutines();
             StartCoroutine(OnKickCompleteAction(3, scoreItem.GetPoint()));
+            //In net ball should be slower .so reduce its speed 
+            rigidbody.velocity = rigidbody.velocity / 3;
         }
         this.gameObject.layer = LayerMask.NameToLayer("Default");
         //Debug.Log("U>> Yahoo goallll  " + collidedObj.gameObject.name);

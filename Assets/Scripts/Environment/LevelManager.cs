@@ -92,7 +92,7 @@ public class LevelManager : MonoBehaviour
         {
             _isGameOver = true;
             GameManager.shared.GameOver();
-            Debug.Log("Game Over ...");
+            //Debug.Log("Game Over ...");
         }
         else
         {

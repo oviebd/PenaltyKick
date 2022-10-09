@@ -24,7 +24,7 @@ public class LocalDataFetcher : IDataFetcher
 
     public string GetTutorial()
     {
-        Debug.Log("File Path " + GetFilePath());
+        //Debug.Log("File Path " + GetFilePath());
         return GetStoredData().tutorialText;
     }
 
