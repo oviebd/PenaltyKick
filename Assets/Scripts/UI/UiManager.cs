@@ -103,12 +103,41 @@ public class UiManager : MonoBehaviour
 
     public void RestartButtonClicked()
     {
-        GameManager.shared.RestartGame();
+
+        ShowRestartGameAlertDialog();
+       // GameManager.shared.RestartGame();
     }
 
     public void TutorialButtonClicked()
     {
         ShowTutorialUI();
+    }
+
+
+    private void ShowRestartGameAlertDialog()
+    {
+        DialogClass actionDialogClass = new DialogBuilder().
+                           Title("Restart Game !!").
+                           Message(" Are you sure to restart this game. This will remove your current score.").
+                           PositiveButtonText("OK").
+                           NegativeButtonText("Cancel").
+
+                           PositiveButtonAction((IDialog dialog) =>
+                           {
+                               GameManager.shared.RestartGame();
+                               //Debug.Log("Action Dialog posituve Button clicked ");
+                               dialog.HideDialog();
+                           }).
+
+                           NegativeButtonAction((IDialog dialog) =>
+                           {
+                               //Debug.Log("Action Dialog Negative Button clicked  ");
+                               dialog.HideDialog();
+                           }).
+
+                           build();
+
+        DialogManager.instance.SpawnDialogBasedOnDialogType(DialogTypeEnum.DialogType.ActionDialog, actionDialogClass);
     }
 
 }
